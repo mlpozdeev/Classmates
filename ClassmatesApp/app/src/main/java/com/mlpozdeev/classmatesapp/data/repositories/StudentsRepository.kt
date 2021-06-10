@@ -3,14 +3,18 @@ package com.mlpozdeev.classmatesapp.data.repositories
 import com.mlpozdeev.classmatesapp.data.database.AppDatabase
 import com.mlpozdeev.classmatesapp.data.database.entities.StudentEntity
 import com.mlpozdeev.classmatesapp.domain.models.Student
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.map
+import io.reactivex.Observable
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class StudentsRepository @Inject constructor(private val db: AppDatabase) {
 
-    val students = db.studentDao().students
+    init {
+        generateStudents()
+    }
+
+    val students: Observable<List<Student>> = db.studentDao().students
         .map {
             val students = mutableListOf<Student>()
             it.forEach { dbStudent ->
@@ -26,22 +30,28 @@ class StudentsRepository @Inject constructor(private val db: AppDatabase) {
 
             return@map students
         }
-        .flowOn(Dispatchers.Default)
 
-    suspend fun insertStudent(student: Student) {
-        db.studentDao().insertStudent(mapStudentToDbStudent(student))
+    private fun generateStudents() {
+        val dbStudents = mutableListOf<StudentEntity>()
+        var count = 0
+        while (count < STUDENTS_COUNT) {
+            dbStudents.add(
+                StudentEntity(
+                    firstName = "name$count",
+                    lastName = "lastName$count",
+                    patronymic = "patronymic$count",
+                    groupName = "group${count / 5}"
+                )
+            )
+            count++
+        }
+        db.runInTransaction {
+            db.studentDao().deleteAll()
+            db.studentDao().insertAll(dbStudents)
+        }
     }
 
-    suspend fun deleteStudents() {
-        db.studentDao().deleteAll()
-    }
-
-    private fun mapStudentToDbStudent(student: Student): StudentEntity {
-        return StudentEntity(
-            student.firstName,
-            student.lastName,
-            student.patronymic,
-            student.groupName
-        )
+    companion object {
+        private const val STUDENTS_COUNT = 20
     }
 }

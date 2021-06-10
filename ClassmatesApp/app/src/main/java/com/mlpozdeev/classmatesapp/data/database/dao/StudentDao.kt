@@ -2,19 +2,21 @@ package com.mlpozdeev.classmatesapp.data.database.dao
 
 import androidx.room.Dao
 import androidx.room.Insert
-import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.mlpozdeev.classmatesapp.data.database.entities.StudentEntity
-import kotlinx.coroutines.flow.Flow
+import io.reactivex.Observable
 
 @Dao
 interface StudentDao {
     @get:Query("SELECT * FROM student")
-    val students: Flow<List<StudentEntity>>
+    val students: Observable<List<StudentEntity>>
 
     @Insert
-    suspend fun insertStudent(student: StudentEntity)
+    fun insertStudent(student: StudentEntity)
+
+    @Insert
+    fun insertAll(students: List<StudentEntity>)
 
     @Query("DELETE FROM student")
-    suspend fun deleteAll()
+    fun deleteAll()
 }
