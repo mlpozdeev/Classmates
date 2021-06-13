@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">ClassmatesApp</string>
+
+    <!--students-->
+    <string name="student_name">Иванов Иван Иванович</string>
+    <string name="group_name">Б01–001–1</string>
+
 </resources>
