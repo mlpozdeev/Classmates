@@ -8,9 +8,9 @@ import com.mlpozdeev.classmatesapp.data.database.entities.StudentEntity
 @Database(entities = [StudentEntity::class], version = 4, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
 
+    abstract fun studentDao(): StudentDao
+
     companion object {
         const val DB_NAME = "classmates-db"
     }
-
-    abstract fun studentDao(): StudentDao
 }
