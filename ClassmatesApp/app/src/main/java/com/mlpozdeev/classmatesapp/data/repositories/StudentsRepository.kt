@@ -3,7 +3,7 @@ package com.mlpozdeev.classmatesapp.data.repositories
 import com.mlpozdeev.classmatesapp.data.database.AppDatabase
 import com.mlpozdeev.classmatesapp.data.database.entities.StudentEntity
 import com.mlpozdeev.classmatesapp.domain.models.Student
-import io.reactivex.Observable
+import io.reactivex.Single
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -14,7 +14,7 @@ class StudentsRepository @Inject constructor(private val db: AppDatabase) {
         generateStudents()
     }
 
-    val students: Observable<List<Student>> = db.studentDao().students
+    val students: Single<List<Student>> = db.studentDao().students
         .map {
             val students = mutableListOf<Student>()
             it.forEach { dbStudent ->

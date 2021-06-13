@@ -7,11 +7,12 @@ import com.mlpozdeev.classmatesapp.data.database.entities.StudentEntity
 import io.reactivex.Completable
 import io.reactivex.Flowable
 import io.reactivex.Observable
+import io.reactivex.Single
 
 @Dao
 interface StudentDao {
     @get:Query("SELECT * FROM student")
-    val students: Flowable<List<StudentEntity>>
+    val students: Single<List<StudentEntity>>
 
     @Insert
     fun insertStudent(student: StudentEntity): Completable

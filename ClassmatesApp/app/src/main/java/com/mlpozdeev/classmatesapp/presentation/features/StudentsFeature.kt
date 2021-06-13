@@ -40,6 +40,7 @@ class StudentsFeature @Inject constructor(
                     .map { LoadedData(it) }
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
+                    .toObservable()
             }
         }
     }
