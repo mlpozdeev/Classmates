@@ -1,9 +1,12 @@
 package com.mlpozdeev.classmatesapp.data.repositories
 
+import android.util.Log
 import com.mlpozdeev.classmatesapp.data.database.AppDatabase
 import com.mlpozdeev.classmatesapp.data.database.entities.StudentEntity
 import com.mlpozdeev.classmatesapp.domain.models.Student
+import io.reactivex.Completable
 import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -11,7 +14,9 @@ import javax.inject.Singleton
 class StudentsRepository @Inject constructor(private val db: AppDatabase) {
 
     init {
-        generateStudents()
+        Completable.fromCallable { generateStudents() }
+            .subscribeOn(Schedulers.io())
+            .subscribe()
     }
 
     val students: Single<List<Student>> = db.studentDao().students
@@ -35,23 +40,32 @@ class StudentsRepository @Inject constructor(private val db: AppDatabase) {
         val dbStudents = mutableListOf<StudentEntity>()
         var count = 0
         while (count < STUDENTS_COUNT) {
-            dbStudents.add(
-                StudentEntity(
-                    firstName = "name$count",
-                    lastName = "lastName$count",
-                    patronymic = "patronymic$count",
-                    groupName = "group${count / 5}"
-                )
+            val student = StudentEntity(
+                firstName = "name$count",
+                lastName = "lastName$count",
+                patronymic = "patronymic$count",
+                groupName = "group${count / 5}"
             )
+            dbStudents.add(student)
+            Log.d(TAG, student.firstName)
             count++
         }
         db.runInTransaction {
-            db.studentDao().deleteAll()
-            db.studentDao().insertAll(dbStudents)
+            db.studentDao().apply {
+                deleteAll()
+                    .subscribe {
+                        Log.d(TAG, "delete success")
+                    }
+                insertAll(dbStudents)
+                    .subscribe {
+                        Log.d(TAG, "insert success")
+                    }
+            }
         }
     }
 
     companion object {
         private const val STUDENTS_COUNT = 20
+        private const val TAG = "StudentsRepository"
     }
 }

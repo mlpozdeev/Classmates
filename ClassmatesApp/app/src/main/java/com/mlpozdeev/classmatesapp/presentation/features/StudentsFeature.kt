@@ -37,8 +37,8 @@ class StudentsFeature @Inject constructor(
         override fun invoke(state: State, wish: Wish): Observable<out Effect> = when(wish) {
             is LoadNewData -> {
                 interactor.students
-                    .map { LoadedData(it) }
                     .subscribeOn(Schedulers.io())
+                    .map { LoadedData(it) }
                     .observeOn(AndroidSchedulers.mainThread())
                     .toObservable()
             }
