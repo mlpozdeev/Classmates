@@ -14,7 +14,7 @@ class StudentViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     private val groupName = view.findViewById<TextView>(R.id.group_name)
 
     fun bind(student: Student) {
-        studentFullName.text = student.firstName
+        studentFullName.text = student.fullName
         groupName.text = student.groupName
     }
 

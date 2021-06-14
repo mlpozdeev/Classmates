@@ -6,4 +6,7 @@ data class Student(
     val patronymic: String?,
     val groupName: String,
     var id: Int? = null
-)
+) {
+    val fullName: String
+        get() = "$lastName $firstName $patronymic"
+}

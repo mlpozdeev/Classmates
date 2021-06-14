@@ -1,11 +1,11 @@
 package com.mlpozdeev.classmatesapp.presentation.fragments.students.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.mlpozdeev.classmatesapp.ClassMatesApp
 import com.mlpozdeev.classmatesapp.dagger.ScreenComponent
 import com.mlpozdeev.classmatesapp.dagger.ScreenModule
@@ -19,7 +19,6 @@ import io.reactivex.functions.Consumer
 import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
-//todo найти блокировку ui
 class StudentsFragment : Fragment(), Consumer<StudentsViewModel>,
     ObservableSource<StudentsUiEvent> {
 
@@ -48,11 +47,11 @@ class StudentsFragment : Fragment(), Consumer<StudentsViewModel>,
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         adapter = StudentsListAdapter()
-        val layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
         binding.studentsList.adapter = adapter
-        binding.studentsList.layoutManager = layoutManager
 
+        Log.d(TAG, "start bindings setup")
         bindings.setup(this)
+        Log.d(TAG, "end bindings setup")
     }
 
     override fun onDestroyView() {
@@ -62,6 +61,7 @@ class StudentsFragment : Fragment(), Consumer<StudentsViewModel>,
 
     override fun accept(viewModel: StudentsViewModel) {
         adapter.submitList(viewModel.students)
+        Log.d(TAG, "list submitted")
     }
 
     override fun subscribe(observer: Observer<in StudentsUiEvent>) {

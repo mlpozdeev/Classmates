@@ -20,8 +20,8 @@ class StudentsRepository @Inject constructor(private val db: AppDatabase) {
     }
 
     val students: Single<List<Student>> = db.studentDao().students
-        .cache()
         .map {
+            Log.d(TAG, "mapping started")
             val students = mutableListOf<Student>()
             it.forEach { dbStudent ->
                 val student = Student(

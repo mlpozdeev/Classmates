@@ -40,10 +40,9 @@ class StudentsFeature @Inject constructor(
             is LoadNewData -> {
                 Log.d(TAG, "Load new data")
                 interactor.students
-                    .subscribeOn(Schedulers.io())
                     .map { LoadedData(it) }
-                    .observeOn(AndroidSchedulers.mainThread())
                     .toObservable()
+                    .observeOn(AndroidSchedulers.mainThread())
             }
         }
     }
