@@ -15,7 +15,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-@FragmentScope
 class StudentsFeature @Inject constructor(
     interactor: StudentsInteractor
 ) : ActorReducerFeature<Wish, Effect, State, Nothing>(

@@ -9,7 +9,6 @@ import com.mlpozdeev.classmatesapp.presentation.fragments.students.event.Student
 import com.mlpozdeev.classmatesapp.presentation.fragments.students.viewmodel.StudentsViewModelTransformer
 import javax.inject.Inject
 
-@FragmentScope
 class StudentsBindings @Inject constructor(
     lifecycleOwner: LifecycleOwner,
     private val feature: StudentsFeature

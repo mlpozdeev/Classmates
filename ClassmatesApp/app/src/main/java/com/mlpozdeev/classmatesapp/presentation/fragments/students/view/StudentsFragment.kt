@@ -19,6 +19,7 @@ import io.reactivex.functions.Consumer
 import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
+//todo найти блокировку ui
 class StudentsFragment : Fragment(), Consumer<StudentsViewModel>,
     ObservableSource<StudentsUiEvent> {
 
