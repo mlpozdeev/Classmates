@@ -1,18 +1,21 @@
-package com.mlpozdeev.classmatesapp.presentation.features
+package com.mlpozdeev.classmatesapp.presentation.features.students
 
+import android.util.Log
 import com.badoo.mvicore.element.Actor
 import com.badoo.mvicore.element.Reducer
 import com.badoo.mvicore.feature.ActorReducerFeature
+import com.mlpozdeev.classmatesapp.dagger.FragmentScope
 import com.mlpozdeev.classmatesapp.domain.interactors.StudentsInteractor
 import com.mlpozdeev.classmatesapp.domain.models.Student
-import com.mlpozdeev.classmatesapp.presentation.features.StudentsFeature.*
-import com.mlpozdeev.classmatesapp.presentation.features.StudentsFeature.Wish.*
-import com.mlpozdeev.classmatesapp.presentation.features.StudentsFeature.Effect.*
+import com.mlpozdeev.classmatesapp.presentation.features.students.StudentsFeature.*
+import com.mlpozdeev.classmatesapp.presentation.features.students.StudentsFeature.Wish.*
+import com.mlpozdeev.classmatesapp.presentation.features.students.StudentsFeature.Effect.*
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
+@FragmentScope
 class StudentsFeature @Inject constructor(
     interactor: StudentsInteractor
 ) : ActorReducerFeature<Wish, Effect, State, Nothing>(
@@ -36,6 +39,7 @@ class StudentsFeature @Inject constructor(
     class ActorImpl(private val interactor: StudentsInteractor) : Actor<State, Wish, Effect> {
         override fun invoke(state: State, wish: Wish): Observable<out Effect> = when(wish) {
             is LoadNewData -> {
+                Log.d(TAG, "Load new data")
                 interactor.students
                     .subscribeOn(Schedulers.io())
                     .map { LoadedData(it) }
@@ -51,5 +55,9 @@ class StudentsFeature @Inject constructor(
                 students = effect.students
             )
         }
+    }
+
+    companion object {
+        private const val TAG = "StudentsFeature"
     }
 }

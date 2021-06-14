@@ -1,4 +1,4 @@
-package com.mlpozdeev.classmatesapp.presentation.fragments.students
+package com.mlpozdeev.classmatesapp.presentation.fragments.students.view
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil

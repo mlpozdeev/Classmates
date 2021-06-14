@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:textColor="@color/black"
+        android:textColor="@color/design_default_color_primary"
         android:textFontWeight="600"
         android:textSize="16sp"
         app:layout_constraintBottom_toTopOf="@+id/group_name"
@@ -30,4 +30,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/student_full_name"
         tools:text="@string/group_name" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
